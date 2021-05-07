@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+	<title>Signing String Explainer</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!--
+https://github.com/spruceid/tzvm2021-explainer/
+
+Copyright 2021 Spruce Systems, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<h3>Signing String Explainer</h3>
+<textarea id="input" placeholder="Tezos Signed Message: \n_:c14n0&hellip;"></textarea>
+<div id="transform">
+	<span id="arrow">&darr;</span>
+	<span id="loader" style="display:none">&hellip;</span>
+</div>
+<div id="output">
+	<div id="output-tabs">
+		<a href="#" name="view=content" class="tab-link">Content</a>
+		<a href="#" name="view=rdf" class="tab-link">RDF</a>
+		<a href="#" name="view=nquads" class="tab-link">N-Quads</a>
+	</div>
+	<div id="output-inner"></div>
+</div>
+
+<script src="node_modules.js"></script>
+<script src="main.js"></script>
+</body>
+</html>

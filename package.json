@@ -1,0 +1,15 @@
+{
+  "name": "tzvm2021-explainer",
+  "author": "Spruce Systems, Inc.",
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "browserify -r just-debounce -r rdf-nx-parser -r querystring -o node_modules.js"
+  },
+  "devDependencies": {
+    "browserify": "^17.0.0"
+  },
+  "dependencies": {
+    "just-debounce": "^1.1.0",
+    "rdf-nx-parser": "^1.0.3"
+  }
+}
