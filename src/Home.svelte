@@ -18,11 +18,11 @@
   };
 
   const hashUpdate = async () => {
-    message = decodeURIComponent(window.location.hash.substring(1));
+    message = decodeURIComponent(window.location.hash.replace(/^#!?/, ''));
     parse(message);
   };
   const updateHash = async (message) =>
-    (window.location.hash = encodeURIComponent(message));
+    (window.location.hash = '!' + encodeURIComponent(message));
     hashUpdate();
 </script>
 
