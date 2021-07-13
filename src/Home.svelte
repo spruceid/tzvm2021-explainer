@@ -16,6 +16,13 @@
       .replace(/([A-Z]+)([A-Z][a-z\d]+)/g, "$1" + separator + "$2")
       .toLowerCase();
   };
+
+  const hashUpdate = async () => {
+    message = decodeURIComponent(window.location.hash.substring(1));
+    parse(message);
+  };
+  const updateHash = async (message) =>
+    (window.location.hash = encodeURIComponent(message));
 </script>
 
 <!--
@@ -36,18 +43,21 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
+<svelte:window on:hashchange={hashUpdate} />
+
 <BasePage class="flex-col">
   <h1 class="w-full text-4xl mt-8 font-bold">Signing String Explainer</h1>
-  <div class="flex-grow flex mt-8">
+  <div class="flex-grow flex flex-col mt-8">
     <textarea
-      class="overflow-x-auto rounded-lg bg-gray-650 p-2 mr-4 w-1/4 resize-none"
+      class="overflow-x-auto rounded-lg bg-gray-650 p-2 mr-4 h-20 resize-none"
       bind:value={message}
-      on:input={() => parse(message)}
+      on:input={() => {
+        parse(message);
+        updateHash(message);
+      }}
     />
-    <span class="self-center text-4xl">&rarr;</span>
-    <div
-      class="w-3/4 flex rounded-lg bg-gray-650 ml-4 flex-col json-wrapper flex-grow"
-    >
+    <span class="self-center text-4xl">&darr;</span>
+    <div class="flex rounded-lg bg-gray-650 flex-col json-wrapper flex-grow">
       <div class="flex bg-gray-600 rounded-lg rounded-b-none pt-2 px-2">
         <div class="flex w-full">
           <p
