@@ -3,7 +3,7 @@
   let message: string = "";
   import { parse } from "./parser";
   import JSONTree from "svelte-json-tree";
-  import { objectView, output } from "src/store";
+  import { alert, objectView, output } from "src/store";
   import ModeSwitcher from "./components/ModeSwitcher.svelte";
   let selectedView: string = "content";
   const classes = "underline justify-center border-b-4";
@@ -18,12 +18,21 @@
   };
 
   const hashUpdate = async () => {
-    message = decodeURIComponent(window.location.hash.replace(/^#!?/, ''));
+    message = decodeURIComponent(window.location.hash.replace(/^#!?/, ""));
     parse(message);
   };
   const updateHash = async (message) =>
-    (window.location.hash = '!' + encodeURIComponent(message));
-    hashUpdate();
+    (window.location.hash = "!" + encodeURIComponent(message));
+  hashUpdate();
+
+  const getLinkTag = (field) => {
+    if (field) {
+      if (field.startsWith("http") || field.startsWith("did")) {
+        return `<a href=${field} target="_blank"> ${field} </a>`;
+      }
+      return `<p> ${field} </p>`;
+    }
+  };
 </script>
 
 <!--
@@ -55,6 +64,7 @@ limitations under the License.
       on:input={() => {
         parse(message);
         updateHash(message);
+        alert.set(null);
       }}
     />
     <span class="self-center text-4xl">&darr;</span>
@@ -101,9 +111,9 @@ limitations under the License.
                     {decamelize(field, " ")}:&nbsp;
                   </p>
                   {#if typeof $output[selectedView].verifiableCredential[field] === "string"}
-                    <p>
-                      {$output[selectedView].verifiableCredential[field]}
-                    </p>
+                    {@html getLinkTag(
+                      $output[selectedView].verifiableCredential[field]
+                    )}
                   {/if}
                 </div>
                 {#if typeof $output[selectedView].verifiableCredential[field] !== "string"}
@@ -126,9 +136,11 @@ limitations under the License.
                             : ""}
                         </p>
                         <p class:font-bold={!decamelize(subField, " ")}>
-                          {$output[selectedView].verifiableCredential[field][
-                            subField
-                          ]}
+                          {@html getLinkTag(
+                            $output[selectedView].verifiableCredential[field][
+                              subField
+                            ]
+                          )}
                         </p>
                       </div>
                     {/each}
@@ -140,11 +152,40 @@ limitations under the License.
               {#each Object.keys($output[selectedView].proofOptions) as field}
                 <div class="flex flex-wrap m-2">
                   <p class="capitalize font-bold">
-                    {decamelize(field, " ")}:&nbsp;
+                    {#if field === "type" && $output[selectedView].proofOptions[field].includes("Unknown")}
+                      <p class="text-red-600">Unknown type:&nbsp;</p>
+                    {:else}
+                      {decamelize(field, " ")}:&nbsp;
+                    {/if}
                   </p>
                   {#if typeof $output[selectedView].proofOptions[field] === "string"}
                     <p>
-                      {$output[selectedView].proofOptions[field]}
+                      {#if $output[selectedView].proofOptions[field].includes("Unknown")}
+                        {#if $output[selectedView].proofOptions[field].includes("http")}
+                          <a
+                            href={$output[selectedView].proofOptions[
+                              field
+                            ].replace("Unknown type:", "")}
+                            class="text-red-600"
+                          >
+                            {$output[selectedView].proofOptions[field].replace(
+                              "Unknown type:",
+                              ""
+                            )}
+                          </a>
+                        {:else}
+                          <p class="text-red-600">
+                            {$output[selectedView].proofOptions[field].replace(
+                              "Unknown type:",
+                              ""
+                            )}
+                          </p>
+                        {/if}
+                      {:else}
+                        {@html getLinkTag(
+                          $output[selectedView].proofOptions[field]
+                        )}
+                      {/if}
                     </p>
                   {/if}
                 </div>
@@ -209,7 +250,7 @@ limitations under the License.
                 {#each $output[selectedView].document.body as row}
                   <tr class="border-b-2 border-white">
                     {#each row as column}
-                      <td class="p-2">{column}</td>
+                      <td class="p-2">{@html getLinkTag(column)}</td>
                     {/each}
                   </tr>
                 {/each}
@@ -226,7 +267,7 @@ limitations under the License.
                 {#each $output[selectedView].proofOptions.body as row}
                   <tr class="border-b-2 border-white">
                     {#each row as column}
-                      <td class="p-2">{column}</td>
+                      <td class="p-2">{@html getLinkTag(column)}</td>
                     {/each}
                   </tr>
                 {/each}
@@ -234,11 +275,13 @@ limitations under the License.
             </table>
           {:else}
             <h3 class="text-left italic">Document</h3>
-            <pre class="border border-white overflow-auto">
+            <pre
+              class="border border-white overflow-auto">
               {$output[selectedView].docNquads}
             </pre>
             <h3 class="text-left italic mt-2">Proof Options</h3>
-            <pre class="border border-white overflow-auto">
+            <pre
+              class="border border-white overflow-auto">
               {$output[selectedView].proofNquads}
             </pre>
           {/if}
