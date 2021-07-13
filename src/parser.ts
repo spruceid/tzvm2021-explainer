@@ -210,7 +210,7 @@ function renderType(object): { type: string } {
     case "https://tzprofiles.com/BasicProfile":
       return { type: "Tezos Profile (tzprofiles.com)" };
     default:
-      return { type: `Unkown type: ${object.value}` };
+      return { type: `Unknown type: ${object.value}` };
   }
 }
 
