@@ -163,6 +163,25 @@ limitations under the License.
                   </div>
                 {/if}
               {/each}
+              {#if $output[selectedView].unknown.body.length > 0}
+                <h2 class="mt-8">Unrecognized terms</h2>
+                <table>
+                  <thead class="border-b-4 border-white">
+                    {#each $output[selectedView].unknown.headers as header}
+                      <th class="text-left p-2">{header}</th>
+                    {/each}
+                  </thead>
+                  <tbody class="whitespace-nowrap">
+                    {#each $output[selectedView].unknown.body as row}
+                      <tr class="border-b-2 border-white">
+                        {#each row as column}
+                          <td class="p-2">{column}</td>
+                        {/each}
+                      </tr>
+                    {/each}
+                  </tbody>
+                </table>
+              {/if}
               <!-- TODO: Verifiable Presentation -->
             {:else}
               <h2>Document</h2>
@@ -205,11 +224,15 @@ limitations under the License.
           {:else}
             <h3 class="text-left italic">Document</h3>
             <div class="border border-white overflow-auto">
-              {$output[selectedView].docNquads}
+              {#each $output[selectedView].docNquads.split("\n") as nquad}
+                {nquad}
+              {/each}
             </div>
             <h3 class="text-left italic mt-2">Proof Options</h3>
             <div class="border border-white overflow-auto">
-              {$output[selectedView].proofNquads}
+              {#each $output[selectedView].proofNquads.split("\n") as proofNquad}
+                {proofNquad}
+              {/each}
             </div>
           {/if}
         {/if}

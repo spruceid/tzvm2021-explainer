@@ -51,10 +51,6 @@
       if (message) {
         updateStyle();
         fade = true;
-        if (subscriptionTimeout) clearTimeout(subscriptionTimeout);
-        subscriptionTimeout = setTimeout(() => {
-          reset();
-        }, 10000);
       }
     });
   });

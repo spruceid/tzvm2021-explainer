@@ -113,10 +113,13 @@ function renderInput(input) {
   const proofLines = proofNquads.split(/\n/);
   const proofStatements = proofLines.map(parseQuad);
   const docStatements = docLines.map(parseQuad);
+  const rdf = renderRdfLdpTable(proofStatements, docStatements);
+  const nquads = { proofNquads, docNquads };
+  const content = renderRdfLdpContent(proofStatements, docStatements);
   return {
-    rdf: renderRdfLdpTable(proofStatements, docStatements),
-    nquads: { proofNquads, docNquads },
-    content: renderRdfLdpContent(proofStatements, docStatements),
+    rdf,
+    nquads,
+    content,
   };
 }
 
@@ -285,9 +288,11 @@ function renderCredentialSubject(object, statements) {
   const subjectStatements = takeStatements(statements, (statement) => {
     return isTermEqual(statement.subject, object);
   });
-  elements.push({ "": subjectStatements[0].subject.value });
-  for (const statement of subjectStatements) {
-    elements.push(renderCredentialSubjectStatement(statement));
+  elements.push({ "": object.value });
+  if (subjectStatements.length > 0) {
+    for (const statement of subjectStatements) {
+      elements.push(renderCredentialSubjectStatement(statement));
+    }
   }
   return { credentialSubject: Object.assign.apply(Object, elements) };
 }
@@ -327,6 +332,7 @@ function renderVerifiableCredentialStatement(stmt, statements) {
     throw new Error("Expected default graph");
   }
   const predicateIRI = stmt.predicate.value;
+
   switch (predicateIRI) {
     case "https://www.w3.org/2018/credentials#credentialSubject":
       return renderCredentialSubject(stmt.object, statements);
@@ -394,6 +400,7 @@ function renderVerifiableCredential(subject, statements) {
   for (const statement of vcStatements) {
     el.push(renderVerifiableCredentialStatement(statement, statements));
   }
+
   return Object.assign.apply(Object, el);
 }
 
@@ -418,9 +425,11 @@ function renderLDDocument(statements) {
     throw new Error("More than one VerifiableCredential");
   }
   const subject = vcTypeStatements[0].subject;
+  const verifiableCredential = renderVerifiableCredential(subject, statements);
+  const unknown = renderRdfDatasetTable(statements);
   return {
-    verifiableCredential: renderVerifiableCredential(subject, statements),
-    unkown: renderRdfDatasetTable(statements),
+    verifiableCredential,
+    unknown,
   };
 }
 
@@ -447,8 +456,13 @@ function renderNQuads(proofNQuads, docNQuads) {
 }
 
 function renderRdfLdpContent(proofStatements, docStatements) {
+  const LDDocument = renderLDDocument(docStatements);
+  const verifiableCredential = LDDocument.verifiableCredential;
+  const unknown = LDDocument.unknown;
+  const proofOptions = renderProofOptions(proofStatements);
   return {
-    verifiableCredential: renderLDDocument(docStatements).verifiableCredential,
-    proofOptions: renderProofOptions(proofStatements),
+    verifiableCredential,
+    proofOptions,
+    unknown,
   };
 }
