@@ -234,17 +234,13 @@ limitations under the License.
             </table>
           {:else}
             <h3 class="text-left italic">Document</h3>
-            <div class="border border-white overflow-auto">
-              {#each $output[selectedView].docNquads.split("\n") as nquad}
-                {nquad}
-              {/each}
-            </div>
+            <pre class="border border-white overflow-auto">
+              {$output[selectedView].docNquads}
+            </pre>
             <h3 class="text-left italic mt-2">Proof Options</h3>
-            <div class="border border-white overflow-auto">
-              {#each $output[selectedView].proofNquads.split("\n") as proofNquad}
-                {proofNquad}
-              {/each}
-            </div>
+            <pre class="border border-white overflow-auto">
+              {$output[selectedView].proofNquads}
+            </pre>
           {/if}
         {/if}
       </div>
