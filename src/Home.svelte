@@ -216,16 +216,16 @@ limitations under the License.
                 {/if}
               {/each}
               {#if $output[selectedView].unknown.body.length > 0}
-                <h2 class="mt-8">Unrecognized terms</h2>
+                <h2 class="mt-8 text-red-600">Unrecognized terms</h2>
                 <table>
-                  <thead class="border-b-4 border-white">
+                  <thead class="border-b-4 border-red-300 text-red-600">
                     {#each $output[selectedView].unknown.headers as header}
                       <th class="text-left p-2">{header}</th>
                     {/each}
                   </thead>
                   <tbody class="whitespace-nowrap">
                     {#each $output[selectedView].unknown.body as row}
-                      <tr class="border-b-2 border-white">
+                      <tr class="border-b-2 border-red-300 text-red-500">
                         {#each row as column}
                           <td class="p-2">{column}</td>
                         {/each}
