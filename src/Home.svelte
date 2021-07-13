@@ -23,6 +23,7 @@
   };
   const updateHash = async (message) =>
     (window.location.hash = encodeURIComponent(message));
+    hashUpdate();
 </script>
 
 <!--
