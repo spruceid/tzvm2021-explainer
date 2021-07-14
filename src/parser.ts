@@ -73,6 +73,7 @@ export const parse = (vc) => {
   let el;
   try {
     el = renderInput(vc.trim());
+    alert.set(null);
   } catch (e) {
     alert.set({
       message: e.message,
