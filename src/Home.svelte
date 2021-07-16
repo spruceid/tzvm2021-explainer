@@ -56,7 +56,6 @@ limitations under the License.
 <svelte:window on:hashchange={hashUpdate} />
 
 <BasePage class="flex-col">
-  <h1 class="w-full text-4xl mt-8 font-bold">Signing String Explainer</h1>
   <div class="flex-grow flex flex-col mt-8">
     <textarea
       class="overflow-x-auto rounded-lg bg-gray-650 p-2 mr-4 h-20 resize-none"
