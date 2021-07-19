@@ -11,4 +11,3 @@
   <slot />
 </div>
 <Alert />
-<Footer />
