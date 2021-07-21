@@ -21,10 +21,10 @@ During a signing request, in the wallet's signing window, click the copy icon to
 ![Signing Window](https://user-images.githubusercontent.com/95347/117200305-5b76cf00-adb9-11eb-862e-ed4745cec266.png)
 
 Then in the Explainer tool, paste the payload:
-![Paste](https://user-images.githubusercontent.com/95347/117202109-6f233500-adbb-11eb-8dcf-126c68a38278.png)
+![Paste](https://user-images.githubusercontent.com/95347/126497780-74eff8c7-7b07-4f7d-877b-eca25781923b.png)
 
 The tool should then parse the data and render the result in the Content tab:
-![Content](https://user-images.githubusercontent.com/95347/117201868-27041280-adbb-11eb-8016-f3dea012c445.png)
+![Content](https://user-images.githubusercontent.com/95347/126497783-e95cfc74-04b4-44c5-b18a-d51cc39bd63f.png)
 
 There is also a [RDF][] tab for a tabular view of the data, and [N-Quads][] tab from which you can copy the data for further processing.
 
